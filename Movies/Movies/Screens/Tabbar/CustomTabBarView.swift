@@ -10,7 +10,6 @@ final class CustomTabBarView: UIView {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .equalSpacing
-        stack.alignment = .center
         return stack
     }()
 
@@ -29,8 +28,6 @@ final class CustomTabBarView: UIView {
     // MARK: - UI
     private func setupUI() {
         backgroundColor = .accent
-        layer.cornerRadius = 24
-        
         setupConstraints()
         setupItems()
     }

@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScane = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScane)
-        window?.rootViewController = MainTabBarController()
+        window?.rootViewController = SplashViewController()
         window?.makeKeyAndVisible()
     
     }
