@@ -51,7 +51,7 @@ final class CustomSearchView: UIView {
 
     private func configureView() {
         backgroundColor = .graphiteGray
-        layer.cornerRadius = 14
+        layer.cornerRadius = 16
     }
 
     private func addSubviews() {
