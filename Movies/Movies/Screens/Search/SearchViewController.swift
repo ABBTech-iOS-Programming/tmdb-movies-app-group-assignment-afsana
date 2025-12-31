@@ -6,24 +6,30 @@
 //
 
 import UIKit
+import SnapKit
+final class SearchViewController: UIViewController {
 
-class SearchViewController: UIViewController {
+    private let searchView = CustomSearchView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .accent
+        searchView.isEditable = true
+        setupUI()
     }
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchView.textField.becomeFirstResponder()
     }
-    */
 
+    private func setupUI() {
+        view.addSubview(searchView)
+
+        searchView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(12)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(44)
+        }
+    }
 }
