@@ -1,11 +1,3 @@
-//
-//  MainTabBarController.swift
-//  Movies
-//
-//  Created by Afsana on 31.12.25.
-//
-
-
 import UIKit
 import SnapKit
 
@@ -18,6 +10,7 @@ final class MainTabBarController: UITabBarController {
         setupTabs()
         setupCustomTabBar()
         tabBar.isHidden = true
+        selectTab(index: 0)
     }
 
     private func setupTabs() {
@@ -38,9 +31,12 @@ final class MainTabBarController: UITabBarController {
         }
 
         customTabBar.onSelect = { [weak self] index in
-            self?.selectedIndex = index
+            self?.selectTab(index: index)
         }
+    }
 
-        customTabBar.setSelected(index: 0)
+    func selectTab(index: Int) {
+        selectedIndex = index
+        customTabBar.setSelected(index: index)
     }
 }
