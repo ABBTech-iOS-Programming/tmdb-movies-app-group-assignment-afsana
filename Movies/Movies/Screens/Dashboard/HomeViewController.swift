@@ -36,7 +36,7 @@ final class HomeViewController: UIViewController {
         )
         
         collectionView.backgroundColor = .accent
-        collectionView.showsHorizontalScrollIndicator = true
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView
             .register(
                 MovieCategoryCell.self,
@@ -54,7 +54,7 @@ final class HomeViewController: UIViewController {
         layout.scrollDirection = .vertical
         
         let spacing: CGFloat = 12
-        let totalSpacing = spacing * 5
+        let totalSpacing = spacing * 6
         let itemWidth = (UIScreen.main.bounds.width - totalSpacing) / 3
         
         layout.itemSize = CGSize(width: itemWidth, height: itemWidth * 1.5)
@@ -75,7 +75,7 @@ final class HomeViewController: UIViewController {
             )
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.tag = 2
         return collectionView
     }()
@@ -198,14 +198,14 @@ final class HomeViewController: UIViewController {
         
         categoryCollectionView.snp.makeConstraints { make in
             make.top.equalTo(trendingCollectionView.snp.bottom).offset(20)
-            make.horizontalEdges.equalToSuperview().inset(12)
+            make.horizontalEdges.equalToSuperview().inset(8)
             make.height.equalTo(50)
         }
         
         movieCollectionView.snp.makeConstraints { make in
             make.top.equalTo(categoryCollectionView.snp.bottom)
-            make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.horizontalEdges.equalToSuperview().inset(12)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
         }
     }
 }

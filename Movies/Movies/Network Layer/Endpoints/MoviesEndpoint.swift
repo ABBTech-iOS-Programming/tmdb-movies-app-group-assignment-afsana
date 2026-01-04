@@ -6,6 +6,9 @@ enum MoviesEndpoint {
     case getUpcomingMovies
     case getTopRatedMovies
     case getPopularMovies
+    
+    case searchMovies(query: String)
+    case getGenres
 }
 
 extension MoviesEndpoint: Endpoint {
@@ -29,6 +32,10 @@ extension MoviesEndpoint: Endpoint {
             return "/3/movie/top_rated"
         case .getPopularMovies:
             return "/3/movie/popular"
+        case .searchMovies:
+            return "/3/search/movie"
+        case .getGenres:
+            return "/3/genre/movie/list"
         }
     }
         
@@ -44,18 +51,29 @@ extension MoviesEndpoint: Endpoint {
             return .get
         case .getPopularMovies:
             return .get
+        case .searchMovies:
+            return .get
+        case .getGenres:
+            return .get
         }
     }
     
     var headers: [String : String]? {
         switch self {
-        default:
-            return ["Authorization": bearerToken]
+            default:
+                return ["Authorization": bearerToken]
         }
     }
     
     var queryItems: [URLQueryItem]? {
-        return nil
+        switch self {
+            case .searchMovies(let query):
+                return [
+                    URLQueryItem(name: "query", value: query)
+                ]
+            default:
+                return []
+        }
     }
     
     var httpBody: (any Encodable)? {

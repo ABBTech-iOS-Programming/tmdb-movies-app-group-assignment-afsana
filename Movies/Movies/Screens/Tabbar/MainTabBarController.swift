@@ -16,11 +16,14 @@ final class MainTabBarController: UITabBarController {
     private func setupTabs() {
         let networkService = DefaultNetworkService()
         let homeViewModel = HomeViewModel(networkService: networkService)
+        let searchViewModel = SearchViewModel(networkService: networkService)
         
         let homeNav = UINavigationController(
             rootViewController: HomeViewController(viewModel: homeViewModel)
         )
-        let searchNav = UINavigationController(rootViewController: SearchViewController())
+        let searchNav = UINavigationController(
+            rootViewController: SearchViewController(viewModel: searchViewModel)
+        )
         let watchNav = UINavigationController(rootViewController: WatchListViewController())
 
         viewControllers = [homeNav, searchNav, watchNav]
