@@ -1,11 +1,3 @@
-//
-//  MoviePosterCell.swift
-//  Movies
-//
-//  Created by Afsana on 31.12.25.
-//
-
-
 import UIKit
 import SnapKit
 
@@ -43,7 +35,9 @@ final class MoviePosterCell: UICollectionViewCell {
         posterImageView.image = nil
     }
 
-    func configure(with image: UIImage) {
-        posterImageView.image = image
+    func configure(with imagePath: String?) {
+        if let posterPath = imagePath {
+            posterImageView.loadImage(url: posterPath)
+        }
     }
 }
