@@ -7,7 +7,7 @@ class MovieCategoryCell: UICollectionViewCell {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.font = .systemFont(ofSize: 14, weight: .semibold)
         label.textColor = .white
         return label
     }()
