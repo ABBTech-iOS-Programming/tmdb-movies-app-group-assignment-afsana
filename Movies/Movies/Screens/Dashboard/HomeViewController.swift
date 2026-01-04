@@ -7,10 +7,11 @@ final class HomeViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
 
-        let width: CGFloat = 140
-        let height = width * 1.5
-        layout.itemSize = CGSize(width: width, height: height)
-        layout.minimumLineSpacing = 10
+        let spacing: CGFloat = 12
+        let totalSpacing = spacing * 6
+        let itemWidth = (UIScreen.main.bounds.width - totalSpacing) / 2.5
+        layout.itemSize = CGSize(width: itemWidth, height: itemWidth * 1.6)
+        layout.minimumLineSpacing = spacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(MoviePosterCell.self, forCellWithReuseIdentifier: MoviePosterCell.reuseIdentifier)
