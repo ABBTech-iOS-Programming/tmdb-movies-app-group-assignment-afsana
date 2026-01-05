@@ -15,7 +15,6 @@ final class HomeViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(MoviePosterCell.self, forCellWithReuseIdentifier: MoviePosterCell.reuseIdentifier)
-        collectionView.allowsSelection = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.tag = 0
@@ -117,7 +116,7 @@ final class HomeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        super.viewWillAppear(animated)
         
         if categoryCollectionView.indexPathsForSelectedItems?.isEmpty ?? true {
             let indexPath = IndexPath(item: 0, section: 0)
@@ -278,6 +277,39 @@ extension HomeViewController: UICollectionViewDelegate {
             movieCollectionView.reloadData()
             
             collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+            
+        }
+        if collectionView.tag == 2 {
+            guard let movie = viewModel.displayMovies?.results?[indexPath.row] else {
+                return
+            }
+            guard let movieId = movie.id else {
+                return
+            }
+            print("movie id: \(movieId)")
+
+            let networkService = DefaultNetworkService()
+            let detailViewModel = DetailViewModel(networkService:networkService )
+            let detailVC = DetailViewController(viewModel: detailViewModel, movieId: movieId )
+         
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
+        
+        if collectionView.tag == 0 {
+            
+            guard let movie = viewModel.trendingMovies?.results?[indexPath.row] else {
+                return
+            }
+            guard let movieId = movie.id else {
+                return
+            }
+            print("movie id: \(movieId)")
+
+            let networkService = DefaultNetworkService()
+            let detailViewModel = DetailViewModel(networkService:networkService )
+            let detailVC = DetailViewController(viewModel: detailViewModel, movieId: movieId )
+         
+            navigationController?.pushViewController(detailVC, animated: true)
         }
     }
 }
