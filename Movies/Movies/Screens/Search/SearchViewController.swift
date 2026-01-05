@@ -15,6 +15,7 @@ final class SearchViewController: UIViewController {
                 forCellReuseIdentifier: MovieCell.reuseIdentifier
             )
         table.dataSource = self
+        table.delegate = self
         table.keyboardDismissMode = .onDrag
         table.showsVerticalScrollIndicator = false
         return table
@@ -49,7 +50,6 @@ final class SearchViewController: UIViewController {
         setupUI()
         setupSearchHandler()
         bindViewModel()
-        
         viewModel.fetchGenres()
     }
 
@@ -134,5 +134,21 @@ extension SearchViewController: UITableViewDataSource {
         }
         
         return cell
+    }
+}
+
+extension SearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let movie = viewModel.movies?.results?[indexPath.row] else {
+            return
+        }
+        guard let movieId = movie.id else {
+            return
+        }
+        let networkService = DefaultNetworkService()
+        let detailViewModel = DetailViewModel(networkService:networkService )
+        let detailVC = DetailViewController(viewModel: detailViewModel, movieId: movieId )
+     
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
