@@ -47,4 +47,13 @@ final class MainTabBarController: UITabBarController {
         selectedIndex = index
         customTabBar.setSelected(index: index)
     }
+    
+    func hideCustomTabBar() {
+        customTabBar.isHidden = true
+    }
+
+    func showCustomTabBar() {
+        customTabBar.isHidden = false
+    }
+
 }

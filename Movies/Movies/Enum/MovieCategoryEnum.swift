@@ -17,3 +17,4 @@ enum MovieCategoryEnum: String, CaseIterable {
         }
     }
 }
+

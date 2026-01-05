@@ -9,6 +9,10 @@ enum MoviesEndpoint {
     
     case searchMovies(query: String)
     case getGenres
+    
+    case getMovieDetails(id: Int)
+    case getMovieReviews(id: Int)
+
 }
 
 extension MoviesEndpoint: Endpoint {
@@ -36,6 +40,10 @@ extension MoviesEndpoint: Endpoint {
             return "/3/search/movie"
         case .getGenres:
             return "/3/genre/movie/list"
+        case .getMovieDetails(let id):
+            return "/3/movie/\(id)"
+        case .getMovieReviews(let id):
+            return "/3/movie/\(id)/reviews"
         }
     }
         
@@ -54,6 +62,10 @@ extension MoviesEndpoint: Endpoint {
         case .searchMovies:
             return .get
         case .getGenres:
+            return .get
+        case .getMovieDetails:
+            return .get
+        case . getMovieReviews:
             return .get
         }
     }
