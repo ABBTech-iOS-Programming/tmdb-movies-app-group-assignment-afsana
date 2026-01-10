@@ -119,6 +119,8 @@ final class DetailViewController: UIViewController {
     
       override func viewDidLoad() {
           super.viewDidLoad()
+          navigationController?.navigationBar.tintColor = .white
+          navigationItem.backButtonDisplayMode = .minimal
           view.backgroundColor = .accent
           hidesBottomBarWhenPushed = true
           tableView.isHidden = true
@@ -127,6 +129,8 @@ final class DetailViewController: UIViewController {
           bindViewModel()
           viewModel.fetchMovieDetails(id: movieId)
           viewModel.fetchMovieReviews(id: movieId)
+          
+          
       }
     private func bindViewModel() {
         viewModel.onMovieDetailsUpdated = { [weak self] in

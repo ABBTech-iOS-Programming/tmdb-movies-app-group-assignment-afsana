@@ -46,6 +46,7 @@ final class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .accent
+        navigationItem.backButtonDisplayMode = .minimal
         searchView.isEditable = true
         setupUI()
         setupSearchHandler()
