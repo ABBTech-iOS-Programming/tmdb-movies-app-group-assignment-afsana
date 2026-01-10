@@ -1,6 +1,6 @@
 import Foundation
 
-class HomeViewModel {
+final class HomeViewModel {
     var trendingMovies: MovieModel?
     var onTrendingMoviesUpdated: () -> Void = {}
     

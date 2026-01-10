@@ -1,6 +1,6 @@
 import Foundation
 
-class SearchViewModel {
+final class SearchViewModel {
     
     var movies: MovieModel?
     

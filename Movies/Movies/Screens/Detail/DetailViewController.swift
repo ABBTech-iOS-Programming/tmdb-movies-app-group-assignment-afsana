@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class DetailViewController: UIViewController {
+final class DetailViewController: UIViewController {
     // MARK: - UI
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -104,6 +104,14 @@ class DetailViewController: UIViewController {
         label.font = .systemFont(ofSize: 14)
         return label
     }
+    
+    private lazy var bookmarkButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "bookmark"), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(bookmarkTapped), for: .touchUpInside)
+        return button
+    }()
 
       // MARK: - Lifecycle
     var detailSegment: [DetailSegmentEnum] = DetailSegmentEnum.allCases
@@ -114,7 +122,6 @@ class DetailViewController: UIViewController {
           view.backgroundColor = .accent
           hidesBottomBarWhenPushed = true
           tableView.isHidden = true
-
           setupNavigationBar()
           setupUI()
           bindViewModel()
@@ -125,10 +132,23 @@ class DetailViewController: UIViewController {
         viewModel.onMovieDetailsUpdated = { [weak self] in
             guard let self else { return }
             self.updateUI()
+            self.viewModel.fetchWatchlistStatus(
+                     movieId: self.movieId
+                 )
         }
         viewModel.onReviewsUpdated = { [weak self] in
              self?.tableView.reloadData()
          }
+        viewModel.onWatchlistUpdated = { [weak self] isInWatchlist in
+            DispatchQueue.main.async {
+                let imageName = isInWatchlist ? "bookmark.fill" : "bookmark"
+                self?.bookmarkButton.setImage(
+                    UIImage(systemName: imageName),
+                    for: .normal
+                )
+            }
+        }
+
     }
     
     private let yearView = InfoItemView(icon: "calendar", text: "-")
@@ -174,17 +194,18 @@ class DetailViewController: UIViewController {
   
     private func setupNavigationBar() {
         title = "Detail"
-        let bookmarkBtn = UIButton(type: .system)
-        bookmarkBtn.setImage(UIImage(systemName: "bookmark"), for: .normal)
-        bookmarkBtn.tintColor = .white
-        bookmarkBtn.addTarget(self, action: #selector(bookmarkTapped), for: .touchUpInside)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: bookmarkBtn)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: bookmarkButton)
     }
     
     @objc private func bookmarkTapped() {
-        print("Bookmark tapped")
-    }
+        guard let movieId = viewModel.movieDetails?.id else { return }
 
+        viewModel.toggleWatchlist(
+            movieId: movieId,
+            addToWatchlist: !viewModel.isInWatchlist
+        )
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 

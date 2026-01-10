@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class MovieCategoryCell: UICollectionViewCell {
+final class MovieCategoryCell: UICollectionViewCell {
     
     static let reuseIdentifier = String(describing: MovieCategoryCell.self)
 
