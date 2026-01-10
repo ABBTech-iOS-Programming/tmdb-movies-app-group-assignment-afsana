@@ -107,7 +107,7 @@ final class HomeViewController: UIViewController {
         
         title = "What do you want to watch?"
         view.backgroundColor = .accent
-        
+        navigationItem.backButtonDisplayMode = .minimal
         setupUI()
         bindViewModel()
         getMovies()
