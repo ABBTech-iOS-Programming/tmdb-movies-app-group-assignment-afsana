@@ -14,10 +14,65 @@ final class DetailViewModel {
     var onMovieDetailsUpdated: () -> Void = {}
     var reviews: [ReviewModel] = []
     var onReviewsUpdated: () -> Void = {}
+    private(set) var isInWatchlist: Bool = false
+     var onWatchlistUpdated: ((Bool) -> Void)?
     init(networkService: NetworkService) {
         self.networkService = networkService
     }
     
+    func fetchWatchlistStatus(movieId: Int) {
+        networkService.request(
+            MoviesEndpoint.getStates(movieId: movieId)
+        ) { [weak self] (result: Result<AccountStatesResponse, NetworkError>) in
+            guard let self else { return }
+
+            switch result {
+            case .success(let state):
+                print("WATCHLIST STATE FROM API:", state.watchlist)
+                self.isInWatchlist = state.watchlist
+                DispatchQueue.main.async {
+                    self.onWatchlistUpdated?(state.watchlist)
+                }
+
+            case .failure(let error):
+                print("LOG: fetchWatchlistStatus error → \(error)")
+            }
+        }
+    }
+
+
+    
+    func toggleWatchlist(
+        movieId: Int,
+        addToWatchlist: Bool
+    ) {
+        let body = WatchlistRequest(
+            mediaType: "movie",
+            mediaId: movieId,
+            watchlist: addToWatchlist
+        )
+
+        let endpoint = MoviesEndpoint.addWatchList(
+            body: body
+        )
+
+        networkService.request(endpoint) { [weak self]
+            (result: Result<WatchlistResponse, NetworkError>) in
+            guard let self else { return }
+
+            switch result {
+            case .success:
+                self.isInWatchlist = addToWatchlist
+                DispatchQueue.main.async {
+                    self.onWatchlistUpdated?(addToWatchlist)
+                }
+
+            case .failure(let error):
+                print("LOG: Watchlist error → \(error)")
+            }
+        }
+    }
+
     func fetchMovieDetails(id: Int) {
         networkService.request(MoviesEndpoint.getMovieDetails(id: id)) { [weak self]
             (result: Result<MovieDetailsModel, NetworkError>) in

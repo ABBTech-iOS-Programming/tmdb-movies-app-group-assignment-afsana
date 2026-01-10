@@ -12,12 +12,16 @@ enum MoviesEndpoint {
     
     case getMovieDetails(id: Int)
     case getMovieReviews(id: Int)
+    
+    case addWatchList(body: WatchlistRequest)
+    case getWatchList
+    case getStates(movieId: Int)
 
 }
 
 extension MoviesEndpoint: Endpoint {
     var bearerToken: String {
-        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZjVjMWRhN2FmNWQ1ZjEzNzBmODJiZDkyOWMxODA3ZiIsIm5iZiI6MTczOTAxNTcwNC4yMTUwMDAyLCJzdWIiOiI2N2E3NDYxOGRmNTVlOGYyMTNmMTBmZmIiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.oZ9VZlP5lD2DI2ozQNsJvPcaEuxN5TncMcHCuVsQWzQ"
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZDBjMmI2YzkwZTM1YzFmMjU4ZTI0MzQzODI1NmMzYSIsIm5iZiI6MTc2ODA3MDQ5NC4wMDMsInN1YiI6IjY5NjI5ZDVkYTMyNTdiMjU5NmJkMzliZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.8vPqhm3M73ELShTu691gkWxsEInwyiZcwdJZg4UqYj0"
     }
     
     var baseURL: String {
@@ -44,6 +48,13 @@ extension MoviesEndpoint: Endpoint {
             return "/3/movie/\(id)"
         case .getMovieReviews(let id):
             return "/3/movie/\(id)/reviews"
+        case .addWatchList:
+            return "/3/account/22643024/watchlist"
+        case .getWatchList:
+            return "/3/account/22643024/watchlist/movies"
+        case .getStates(let id):
+            return "/3/movie/\(id)/account_states"
+    
         }
     }
         
@@ -65,13 +76,24 @@ extension MoviesEndpoint: Endpoint {
             return .get
         case .getMovieDetails:
             return .get
-        case . getMovieReviews:
+        case  .getMovieReviews:
+            return .get
+        case .addWatchList:
+            return .post
+        case .getWatchList:
+            return .get
+        case .getStates:
             return .get
         }
     }
     
     var headers: [String : String]? {
         switch self {
+        case .addWatchList:
+             return [
+                 "Authorization": bearerToken,
+                 "Content-Type": "application/json"
+             ]
             default:
                 return ["Authorization": bearerToken]
         }
@@ -90,6 +112,8 @@ extension MoviesEndpoint: Endpoint {
     
     var httpBody: (any Encodable)? {
         switch self {
+        case .addWatchList(let body):
+               return body
         default:
             return nil
         }

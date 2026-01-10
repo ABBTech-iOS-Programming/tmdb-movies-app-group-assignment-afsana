@@ -20,6 +20,12 @@ final class DefaultNetworkService: NetworkService {
         switch createRequest {
         case .success(let request):
             session.dataTask(with: request) { data, response, error in
+                if let data = data,
+                   let raw = String(data: data, encoding: .utf8) {
+                    print("RAW RESPONSE:", raw)
+                }
+
+                
                 if let error {
                     completion(.failure(.unknown(error)))
                 }

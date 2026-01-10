@@ -17,6 +17,7 @@ final class MainTabBarController: UITabBarController {
         let networkService = DefaultNetworkService()
         let homeViewModel = HomeViewModel(networkService: networkService)
         let searchViewModel = SearchViewModel(networkService: networkService)
+        let watchListModel = WatchListViewModel(networkService: networkService)
         
         let homeNav = UINavigationController(
             rootViewController: HomeViewController(viewModel: homeViewModel)
@@ -24,7 +25,7 @@ final class MainTabBarController: UITabBarController {
         let searchNav = UINavigationController(
             rootViewController: SearchViewController(viewModel: searchViewModel)
         )
-        let watchNav = UINavigationController(rootViewController: WatchListViewController())
+        let watchNav = UINavigationController(rootViewController: WatchListViewController(viewModel: watchListModel))
 
         viewControllers = [homeNav, searchNav, watchNav]
     }
